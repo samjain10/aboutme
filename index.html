@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Samyak Jain</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #faf7f2;
+      --warm-white: #fff9f3;
+      --ink: #1a1410;
+      --brown: #6b4f3a;
+      --amber: #c8864e;
+      --amber-light: #e8b98a;
+      --muted: #8c7b6e;
+      --border: #e8ddd4;
+      --card: #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.2rem 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(250,247,242,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+    .nav-logo span { color: var(--amber); font-style: italic; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.88rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--amber); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 80px;
+      overflow: hidden;
+    }
+    .hero-left {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 5rem 3rem 5rem 5rem;
+      opacity: 0; transform: translateY(30px);
+      animation: fadeUp 0.9s ease forwards 0.2s;
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--amber-light);
+      color: var(--brown);
+      font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.4rem 1rem; border-radius: 100px;
+      margin-bottom: 2rem; width: fit-content;
+    }
+    .hero-tag::before { content: '◆'; font-size: 0.5rem; }
+
+    h1.hero-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(3.5rem, 6vw, 5.5rem);
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-bottom: 0.3rem;
+    }
+    h1.hero-name em {
+      font-style: italic;
+      color: var(--amber);
+    }
+    .hero-subtitle {
+      font-size: 1.05rem;
+      color: var(--muted);
+      font-weight: 300;
+      margin-bottom: 2.5rem;
+      line-height: 1.6;
+      max-width: 400px;
+    }
+    .hero-subtitle strong { color: var(--brown); font-weight: 600; }
+
+    .hero-stats {
+      display: flex; gap: 2.5rem; margin-bottom: 2.5rem;
+    }
+    .stat { display: flex; flex-direction: column; }
+    .stat-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem; color: var(--ink); line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.75rem; color: var(--muted);
+      font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em;
+      margin-top: 0.2rem;
+    }
+
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 0.7rem;
+      background: var(--ink);
+      color: var(--cream);
+      text-decoration: none;
+      padding: 0.9rem 2rem;
+      border-radius: 100px;
+      font-size: 0.9rem; font-weight: 500;
+      transition: background 0.25s, transform 0.2s;
+      width: fit-content;
+    }
+    .hero-cta:hover { background: var(--amber); transform: translateY(-2px); }
+    .hero-cta::after { content: '↓'; font-size: 1rem; }
+
+    /* HERO RIGHT – decorative */
+    .hero-right {
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+      padding: 5rem 5rem 5rem 2rem;
+      opacity: 0; transform: translateX(30px);
+      animation: fadeLeft 0.9s ease forwards 0.4s;
+    }
+    .hero-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 2rem;
+      padding: 2.5rem;
+      width: 100%; max-width: 380px;
+      box-shadow: 0 20px 60px rgba(107,79,58,0.10);
+      position: relative;
+    }
+    .hero-card::before {
+      content: '';
+      position: absolute; top: -40px; right: -40px;
+      width: 180px; height: 180px;
+      background: radial-gradient(circle, var(--amber-light) 0%, transparent 70%);
+      border-radius: 50%;
+      z-index: -1;
+    }
+    .card-avatar {
+      width: 70px; height: 70px;
+      background: linear-gradient(135deg, var(--amber), var(--brown));
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.8rem; color: white;
+      margin-bottom: 1.2rem;
+    }
+    .card-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem; color: var(--ink);
+      margin-bottom: 0.2rem;
+    }
+    .card-role {
+      font-size: 0.82rem; color: var(--muted);
+      font-weight: 500; margin-bottom: 1.5rem;
+    }
+    .card-divider { height: 1px; background: var(--border); margin-bottom: 1.5rem; }
+    .card-info { display: flex; flex-direction: column; gap: 0.8rem; }
+    .card-row {
+      display: flex; align-items: center; gap: 0.8rem;
+      font-size: 0.85rem; color: var(--ink);
+    }
+    .card-icon {
+      width: 32px; height: 32px;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; flex-shrink: 0;
+    }
+    .card-row span { color: var(--muted); }
+    .card-badge {
+      margin-top: 1.5rem;
+      background: linear-gradient(135deg, #f0faf0, #e8f5e8);
+      border: 1px solid #b8ddb8;
+      border-radius: 10px;
+      padding: 0.8rem 1rem;
+      display: flex; align-items: center; gap: 0.7rem;
+      font-size: 0.82rem; font-weight: 600; color: #3a7a3a;
+    }
+    .badge-icon { font-size: 1.1rem; }
+
+    /* ABOUT */
+    #about {
+      max-width: 900px; margin: 0 auto;
+      padding: 7rem 2rem;
+      opacity: 0; transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    #about.visible { opacity: 1; transform: translateY(0); }
+
+    .section-label {
+      display: flex; align-items: center; gap: 1rem;
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--amber); margin-bottom: 1.5rem;
+    }
+    .section-label::after {
+      content: ''; flex: 1;
+      height: 1px; background: var(--border);
+    }
+
+    h2.section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.1; letter-spacing: -0.02em;
+      color: var(--ink); margin-bottom: 3rem;
+    }
+    h2.section-title em { font-style: italic; color: var(--amber); }
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .story-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .story-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(107,79,58,0.10);
+    }
+    .story-card.wide { grid-column: 1 / -1; }
+    .story-emoji { font-size: 2rem; margin-bottom: 1rem; }
+    .story-card h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem; color: var(--ink);
+      margin-bottom: 0.7rem;
+    }
+    .story-card p {
+      font-size: 0.9rem; line-height: 1.7;
+      color: var(--muted); font-weight: 300;
+    }
+    .story-card p strong { color: var(--brown); font-weight: 600; }
+
+    /* SKILLS */
+    .skills-strip {
+      background: var(--ink);
+      padding: 4rem 0;
+      overflow: hidden;
+    }
+    .skills-inner { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
+    .skills-label {
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--amber); margin-bottom: 2rem;
+    }
+    .skills-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem; color: var(--cream);
+      margin-bottom: 2.5rem; letter-spacing: -0.02em;
+    }
+    .skills-title em { color: var(--amber); font-style: italic; }
+    .skills-list {
+      display: flex; flex-wrap: wrap; gap: 1rem;
+    }
+    .skill-chip {
+      display: flex; align-items: center; gap: 0.6rem;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 100px;
+      padding: 0.7rem 1.3rem;
+      color: var(--cream);
+      font-size: 0.88rem; font-weight: 500;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .skill-chip:hover {
+      background: rgba(200,134,78,0.2);
+      border-color: var(--amber);
+    }
+    .skill-chip .dot {
+      width: 6px; height: 6px;
+      background: var(--amber);
+      border-radius: 50%;
+    }
+
+    /* JOURNEY */
+    #journey {
+      max-width: 900px; margin: 0 auto;
+      padding: 7rem 2rem;
+      opacity: 0; transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    #journey.visible { opacity: 1; transform: translateY(0); }
+
+    .timeline { position: relative; padding-left: 2rem; }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--amber), var(--border));
+    }
+    .timeline-item {
+      position: relative; padding: 0 0 3rem 2.5rem;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute; left: -0.45rem; top: 0.4rem;
+      width: 12px; height: 12px;
+      background: var(--amber);
+      border: 2px solid var(--cream);
+      border-radius: 50%;
+    }
+    .timeline-year {
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--amber); margin-bottom: 0.4rem;
+    }
+    .timeline-item h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem; color: var(--ink); margin-bottom: 0.5rem;
+    }
+    .timeline-item p {
+      font-size: 0.9rem; color: var(--muted);
+      line-height: 1.7; font-weight: 300;
+    }
+    .timeline-item p strong { color: var(--brown); font-weight: 600; }
+
+    /* FOOTER */
+    footer {
+      background: var(--ink);
+      color: var(--cream);
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+    .footer-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem; margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+    .footer-name em { color: var(--amber); font-style: italic; }
+    .footer-sub {
+      font-size: 0.85rem; color: rgba(250,247,242,0.5);
+      margin-bottom: 1.5rem;
+    }
+    .footer-line {
+      height: 1px;
+      background: rgba(255,255,255,0.1);
+      margin: 1.5rem auto; max-width: 200px;
+    }
+    .footer-note {
+      font-size: 0.78rem; color: rgba(250,247,242,0.35);
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeLeft {
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-left { padding: 3rem 1.5rem 2rem; }
+      .hero-right { padding: 2rem 1.5rem 4rem; }
+      .hero-stats { gap: 1.5rem; }
+      .story-grid { grid-template-columns: 1fr; }
+      .story-card.wide { grid-column: auto; }
+      #about, #journey { padding: 4rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">S<span>.</span>Jain</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#journey">Journey</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">CS Undergrad · IIIT Pune</div>
+    <h1 class="hero-name">
+      Samyak<br><em>Jain</em>
+    </h1>
+    <p class="hero-subtitle">
+      A curious <strong>first-year B.Tech student</strong> exploring the tech world, one line of code at a time.
+    </p>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-num">9.16</span>
+        <span class="stat-label">SGPA</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">2007</span>
+        <span class="stat-label">Born</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">Sem 1</span>
+        <span class="stat-label">Completed</span>
+      </div>
+    </div>
+    <a href="#about" class="hero-cta">Read My Story</a>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-card">
+      <div class="card-avatar">S</div>
+      <div class="card-name">Samyak Jain</div>
+      <div class="card-role">B.Tech CSE · IIIT Pune</div>
+      <div class="card-divider"></div>
+      <div class="card-info">
+        <div class="card-row">
+          <div class="card-icon">🏙️</div>
+          From <span>&nbsp;Surat, Gujarat</span>
+        </div>
+        <div class="card-row">
+          <div class="card-icon">🎓</div>
+          DPS Tapi <span>&nbsp;(Schooling)</span>
+        </div>
+        <div class="card-row">
+          <div class="card-icon">💻</div>
+          C / C++ <span>&nbsp;· DSA Learner</span>
+        </div>
+        <div class="card-row">
+          <div class="card-icon">🌐</div>
+          Exploring <span>&nbsp;the Tech World</span>
+        </div>
+      </div>
+      <div class="card-badge">
+        <span class="badge-icon">⭐</span>
+        9.16 SGPA · Semester 1 Complete
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">About Me</div>
+  <h2 class="section-title">A story of <em>grit,</em><br>growth & curiosity</h2>
+  <div class="story-grid">
+    <div class="story-card wide">
+      <div class="story-emoji">👋</div>
+      <h3>Hello, World!</h3>
+      <p>
+        Hey there! I'm Samyak — a kid from <strong>Surat, Gujarat</strong> who grew up with big dreams. 
+        Born in 2007, I did my schooling at <strong>DPS Tapi</strong>, and after Class 10, I dove headfirst 
+        into JEE preparation. Two years of early mornings, late nights, and relentless effort. 
+        I didn't crack IIT. I didn't get a top NIT rank either. 
+        But I scored <strong>25,000 in JEE Mains</strong> — and landed at <strong>IIIT Pune</strong>, 
+        where my real journey began.
+      </p>
+    </div>
+    <div class="story-card">
+      <div class="story-emoji">🧠</div>
+      <h3>The JEE Chapter</h3>
+      <p>
+        Two years of intensive preparation taught me discipline and resilience more than any textbook could. 
+        The outcome wasn't what I planned — but it led me somewhere <strong>equally full of opportunity</strong>. 
+        Not every path is straight, and that's okay.
+      </p>
+    </div>
+    <div class="story-card">
+      <div class="story-emoji">🏫</div>
+      <h3>Life at IIIT Pune</h3>
+      <p>
+        My first semester wasn't just about grades. I focused on <strong>making real friends</strong>, 
+        creating memories, learning C/C++, touching DSA, and honestly just figuring out college life. 
+        The result? A <strong>9.16 SGPA</strong>. Balance is everything.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="skills-strip">
+  <div class="skills-inner">
+    <div class="skills-label">What I Know</div>
+    <div class="skills-title">Skills I've <em>picked up</em></div>
+    <div class="skills-list">
+      <div class="skill-chip"><span class="dot"></span> C Programming</div>
+      <div class="skill-chip"><span class="dot"></span> C++ Programming</div>
+      <div class="skill-chip"><span class="dot"></span> Data Structures (Basic)</div>
+      <div class="skill-chip"><span class="dot"></span> Algorithms (DSA)</div>
+      <div class="skill-chip"><span class="dot"></span> Problem Solving</div>
+      <div class="skill-chip"><span class="dot"></span> HTML (Learning)</div>
+      <div class="skill-chip"><span class="dot"></span> Curiosity & Exploration</div>
+    </div>
+  </div>
+</section>
+
+<!-- JOURNEY -->
+<section id="journey">
+  <div class="section-label">My Journey</div>
+  <h2 class="section-title">Where I've <em>been</em></h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-year">2007</div>
+      <h3>Born in Surat, Gujarat 🌅</h3>
+      <p>The beginning of the story — raised in the diamond city of India, known for its hustle and warmth.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">Up to Class 10</div>
+      <h3>DPS Tapi 📚</h3>
+      <p>Completed my schooling at <strong>Delhi Public School, Tapi</strong>. A foundation of discipline and curiosity built here.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">2 Years of JEE Prep</div>
+      <h3>The Grind 💪</h3>
+      <p>
+        Dedicated two full years to preparing for <strong>JEE</strong> — Physics, Chemistry, Maths, day in and day out. 
+        Secured <strong>25,000 rank in JEE Mains</strong>. Didn't get IIT or a top NIT CS seat. 
+        But the work ethic? That stayed with me.
+      </p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">2024 — Present</div>
+      <h3>B.Tech CSE · IIIT Pune 🎓</h3>
+      <p>
+        Started my Computer Science journey. Semester 1: learned <strong>C/C++</strong>, explored basic DSA, 
+        built friendships, made memories — and finished with a <strong>9.16 SGPA</strong>. 
+        Now in Semester 2, exploring the tech world with full curiosity.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-name">Samyak <em>Jain</em></div>
+  <div class="footer-sub">B.Tech CSE · IIIT Pune · Class of 2028</div>
+  <div class="footer-line"></div>
+  <div class="footer-note">Made with curiosity & a little HTML 🤍</div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('#about, #journey').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
