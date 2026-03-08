@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Samyak Jain | CS Student</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f5f7fa; --white: #ffffff; --ink: #0f172a; --ink2: #334155; --muted: #64748b; --border: #e2e8f0;
+      --blue: #3b82f6; --blue-dark: #2563eb; --blue-light: #eff6ff;
+      --green: #22c55e; --green-light: #f0fdf4; --amber: #f59e0b; --amber-light: #fffbeb;
+      --shadow: 0 4px 16px rgba(0,0,0,0.08); --shadow-lg: 0 10px 40px rgba(0,0,0,0.12);
+      --radius: 12px; --radius-lg: 20px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+
+    /* NAV */
+    nav { position:fixed; top:0; left:0; right:0; z-index:200; background:rgba(255,255,255,0.92); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 5%; height:64px; display:flex; align-items:center; justify-content:space-between; }
+    .nav-logo { font-size:1.2rem; font-weight:700; color:var(--ink); }
+    .nav-logo .dot { color:var(--blue); }
+    .nav-links { display:flex; align-items:center; gap:0.4rem; }
+    .nav-links a { text-decoration:none; color:var(--muted); font-size:0.88rem; font-weight:500; padding:0.4rem 0.9rem; border-radius:8px; transition:all 0.2s; }
+    .nav-links a:hover { color:var(--blue); background:var(--blue-light); }
+    .nav-cta { background:var(--blue) !important; color:white !important; border-radius:8px; }
+    .nav-cta:hover { background:var(--blue-dark) !important; }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; background:none; border:none; }
+    .hamburger span { display:block; width:22px; height:2px; background:var(--ink); border-radius:2px; }
+    .mobile-menu { display:none; position:fixed; top:64px; left:0; right:0; background:white; border-bottom:1px solid var(--border); padding:1rem 5%; flex-direction:column; gap:0.3rem; z-index:199; }
+    .mobile-menu.open { display:flex; }
+    .mobile-menu a { text-decoration:none; color:var(--ink2); font-size:0.95rem; font-weight:500; padding:0.7rem 0.5rem; border-bottom:1px solid var(--border); }
+
+    /* HERO */
+    .hero { min-height:100vh; padding:100px 5% 60px; display:flex; align-items:center; background:white; }
+    .hero-inner { max-width:1100px; margin:0 auto; width:100%; display:grid; grid-template-columns:1fr 400px; gap:4rem; align-items:center; }
+    .hero-badge { display:inline-flex; align-items:center; gap:0.5rem; background:var(--blue-light); color:var(--blue); font-size:0.8rem; font-weight:600; padding:0.35rem 0.9rem; border-radius:100px; margin-bottom:1.5rem; border:1px solid #bfdbfe; opacity:0; animation:fadeUp 0.6s ease forwards 0.1s; }
+    .live-dot { width:7px; height:7px; background:var(--green); border-radius:50%; animation:pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+    h1 { font-size:clamp(2.6rem,5vw,3.8rem); font-weight:800; line-height:1.1; letter-spacing:-0.03em; color:var(--ink); margin-bottom:1rem; opacity:0; animation:fadeUp 0.6s ease forwards 0.2s; }
+    h1 .blue { color:var(--blue); }
+    .hero-sub { font-size:1rem; color:var(--muted); max-width:480px; margin-bottom:2rem; line-height:1.75; opacity:0; animation:fadeUp 0.6s ease forwards 0.3s; }
+    .hero-sub strong { color:var(--ink2); font-weight:600; }
+    .hero-buttons { display:flex; gap:0.8rem; flex-wrap:wrap; opacity:0; animation:fadeUp 0.6s ease forwards 0.4s; }
+    .btn { display:inline-flex; align-items:center; gap:0.5rem; padding:0.72rem 1.4rem; border-radius:10px; font-size:0.9rem; font-weight:600; text-decoration:none; cursor:pointer; transition:all 0.2s; border:none; font-family:'Outfit',sans-serif; }
+    .btn-primary { background:var(--blue); color:white; }
+    .btn-primary:hover { background:var(--blue-dark); transform:translateY(-2px); box-shadow:0 6px 20px rgba(59,130,246,0.3); }
+    .btn-secondary { background:white; color:var(--ink); border:1.5px solid var(--border); }
+    .btn-secondary:hover { border-color:var(--blue); color:var(--blue); transform:translateY(-2px); }
+    .btn-ghost { background:transparent; color:var(--muted); border:1.5px solid var(--border); }
+    .btn-ghost:hover { background:var(--bg); color:var(--ink); }
+    .hero-stats { display:flex; gap:2rem; margin-top:2.5rem; padding-top:2rem; border-top:1px solid var(--border); opacity:0; animation:fadeUp 0.6s ease forwards 0.5s; }
+    .stat { display:flex; flex-direction:column; }
+    .stat-n { font-size:1.8rem; font-weight:800; color:var(--ink); line-height:1; }
+    .stat-l { font-size:0.72rem; color:var(--muted); font-weight:500; margin-top:0.2rem; text-transform:uppercase; letter-spacing:0.04em; }
+    .hero-card { background:white; border:1px solid var(--border); border-radius:var(--radius-lg); padding:2rem; box-shadow:var(--shadow-lg); opacity:0; animation:fadeLeft 0.7s ease forwards 0.4s; }
+    .profile-pic { width:68px; height:68px; border-radius:50%; background:linear-gradient(135deg,var(--blue),#8b5cf6); display:flex; align-items:center; justify-content:center; font-size:1.6rem; font-weight:800; color:white; margin-bottom:1rem; }
+    .card-name { font-size:1.25rem; font-weight:700; color:var(--ink); }
+    .card-role { font-size:0.82rem; color:var(--muted); margin-bottom:1.2rem; }
+    .card-divider { height:1px; background:var(--border); margin-bottom:1.2rem; }
+    .card-rows { display:flex; flex-direction:column; gap:0.72rem; }
+    .card-row { display:flex; align-items:center; gap:0.75rem; font-size:0.85rem; color:var(--ink2); }
+    .row-icon { width:30px; height:30px; border-radius:8px; background:var(--bg); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:0.85rem; flex-shrink:0; }
+    .card-sgpa { margin-top:1.2rem; background:var(--green-light); border:1px solid #bbf7d0; border-radius:10px; padding:0.75rem 1rem; display:flex; align-items:center; gap:0.6rem; font-size:0.83rem; font-weight:600; color:#16a34a; }
+
+    /* SECTIONS */
+    section { padding:5rem 5%; }
+    .section-inner { max-width:1000px; margin:0 auto; }
+    .section-top { margin-bottom:2.5rem; }
+    .section-tag { display:inline-block; background:var(--blue-light); color:var(--blue); font-size:0.73rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:0.28rem 0.8rem; border-radius:6px; margin-bottom:0.6rem; }
+    h2 { font-size:clamp(1.6rem,3vw,2.1rem); font-weight:800; letter-spacing:-0.02em; color:var(--ink); line-height:1.2; }
+    .section-desc { color:var(--muted); font-size:0.92rem; margin-top:0.4rem; max-width:540px; }
+    .reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease,transform 0.6s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    /* ABOUT */
+    #about { background:var(--bg); }
+    .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; }
+    .about-card { background:white; border:1px solid var(--border); border-radius:var(--radius); padding:1.5rem; transition:all 0.2s; }
+    .about-card:hover { box-shadow:var(--shadow); transform:translateY(-3px); }
+    .about-card.span2 { grid-column:1/-1; }
+    .about-card .emoji { font-size:1.6rem; margin-bottom:0.8rem; }
+    .about-card h3 { font-size:1rem; font-weight:700; margin-bottom:0.5rem; color:var(--ink); }
+    .about-card p { font-size:0.87rem; color:var(--muted); line-height:1.75; }
+    .about-card p strong { color:var(--ink2); font-weight:600; }
+
+    /* SKILLS */
+    #skills { background:white; }
+    .skills-tabs { display:flex; gap:0.4rem; margin-bottom:2rem; border-bottom:2px solid var(--border); }
+    .tab-btn { padding:0.55rem 1.1rem; border:none; background:transparent; font-family:'Outfit',sans-serif; font-size:0.87rem; font-weight:600; color:var(--muted); cursor:pointer; border-radius:8px 8px 0 0; transition:all 0.2s; position:relative; bottom:-2px; border-bottom:2px solid transparent; }
+    .tab-btn.active { color:var(--blue); border-bottom-color:var(--blue); background:var(--blue-light); }
+    .tab-btn:hover:not(.active) { color:var(--ink); background:var(--bg); }
+    .tab-panel { display:none; }
+    .tab-panel.active { display:block; }
+    .skills-grid { display:flex; flex-wrap:wrap; gap:0.75rem; }
+    .skill-chip { display:flex; align-items:center; gap:0.6rem; background:var(--bg); border:1.5px solid var(--border); border-radius:10px; padding:0.55rem 1rem; font-size:0.87rem; font-weight:600; color:var(--ink2); transition:all 0.2s; cursor:default; }
+    .skill-chip:hover { border-color:var(--blue); color:var(--blue); background:var(--blue-light); transform:translateY(-2px); }
+    .level { font-size:0.7rem; font-weight:500; padding:0.15rem 0.5rem; border-radius:100px; }
+    .level.good { background:var(--green-light); color:#16a34a; }
+    .level.learning { background:var(--amber-light); color:#b45309; }
+    .level.basic { background:var(--blue-light); color:var(--blue); }
+
+    /* JOURNEY */
+    #journey { background:var(--bg); }
+    .timeline { position:relative; padding-left:2rem; }
+    .timeline::before { content:''; position:absolute; left:9px; top:6px; bottom:0; width:2px; background:linear-gradient(to bottom,var(--blue),var(--border)); }
+    .t-item { position:relative; padding:0 0 2.5rem 2rem; }
+    .t-dot { position:absolute; left:-1.9rem; top:4px; width:12px; height:12px; border-radius:50%; background:var(--blue); border:2px solid white; box-shadow:0 0 0 3px var(--blue-light); }
+    .t-year { font-size:0.73rem; font-weight:700; color:var(--blue); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.3rem; }
+    .t-item h3 { font-size:1.02rem; font-weight:700; color:var(--ink); margin-bottom:0.4rem; }
+    .t-item p { font-size:0.87rem; color:var(--muted); line-height:1.75; }
+    .t-item p strong { color:var(--ink2); font-weight:600; }
+    .t-tag { display:inline-block; margin-top:0.6rem; background:var(--blue-light); color:var(--blue); font-size:0.73rem; font-weight:600; padding:0.2rem 0.7rem; border-radius:100px; }
+
+    /* FACTS */
+    #fun { background:white; }
+    .facts-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+    .fact-card { background:var(--bg); border:1.5px solid var(--border); border-radius:var(--radius); padding:1.5rem; text-align:center; transition:all 0.25s; cursor:default; }
+    .fact-card:hover { border-color:var(--blue); box-shadow:var(--shadow); transform:translateY(-4px); }
+    .fact-card .big { font-size:2rem; margin-bottom:0.5rem; }
+    .fact-card h4 { font-size:0.93rem; font-weight:700; color:var(--ink); margin-bottom:0.3rem; }
+    .fact-card p { font-size:0.8rem; color:var(--muted); }
+
+    /* GOALS */
+    #goals { background:var(--bg); }
+    .goals-list { display:flex; flex-direction:column; gap:0.9rem; }
+    .goal-item { background:white; border:1px solid var(--border); border-radius:var(--radius); padding:1.1rem 1.4rem; display:flex; align-items:center; gap:1rem; transition:all 0.2s; }
+    .goal-item:hover { box-shadow:var(--shadow); transform:translateX(5px); }
+    .goal-icon { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; }
+    .goal-icon.blue { background:var(--blue-light); }
+    .goal-icon.green { background:var(--green-light); }
+    .goal-icon.amber { background:var(--amber-light); }
+    .goal-text h4 { font-size:0.93rem; font-weight:700; color:var(--ink); }
+    .goal-text p { font-size:0.81rem; color:var(--muted); }
+    .goal-status { margin-left:auto; flex-shrink:0; font-size:0.73rem; font-weight:700; padding:0.23rem 0.7rem; border-radius:100px; }
+    .status-active { background:var(--green-light); color:#16a34a; }
+    .status-soon { background:var(--amber-light); color:#b45309; }
+    .status-future { background:var(--blue-light); color:var(--blue); }
+
+    /* CONTACT */
+    #contact { background:white; }
+    .contact-box { background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%); border-radius:var(--radius-lg); padding:3rem; text-align:center; }
+    .contact-box h3 { font-size:1.7rem; font-weight:800; margin-bottom:0.5rem; color:white; }
+    .contact-box p { color:rgba(255,255,255,0.55); margin-bottom:2rem; font-size:0.93rem; }
+    .contact-links { display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; }
+    .contact-btn { display:inline-flex; align-items:center; gap:0.55rem; padding:0.7rem 1.4rem; border-radius:10px; font-size:0.88rem; font-weight:600; text-decoration:none; transition:all 0.2s; font-family:'Outfit',sans-serif; }
+    .contact-btn.white { background:white; color:var(--ink); }
+    .contact-btn.white:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(255,255,255,0.2); }
+    .contact-btn.outline { background:rgba(255,255,255,0.1); color:white; border:1.5px solid rgba(255,255,255,0.2); }
+    .contact-btn.outline:hover { background:rgba(255,255,255,0.18); transform:translateY(-2px); }
+
+    #btt { position:fixed; bottom:2rem; right:2rem; width:42px; height:42px; border-radius:12px; background:var(--blue); color:white; border:none; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow-lg); transition:all 0.2s; opacity:0; pointer-events:none; z-index:100; }
+    #btt.show { opacity:1; pointer-events:auto; }
+    #btt:hover { background:var(--blue-dark); transform:translateY(-3px); }
+
+    footer { background:var(--ink); color:rgba(255,255,255,0.45); text-align:center; padding:2rem 5%; font-size:0.8rem; }
+    footer span { color:rgba(255,255,255,0.8); font-weight:600; }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeLeft { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:translateX(0)} }
+
+    @media(max-width:768px) {
+      .nav-links{display:none} .hamburger{display:flex}
+      .hero{padding:90px 4% 50px} .hero-inner{grid-template-columns:1fr;gap:2rem} .hero-card{display:none}
+      .hero-stats{gap:1.5rem} section{padding:3.5rem 4%}
+      .about-grid{grid-template-columns:1fr} .about-card.span2{grid-column:auto}
+      .facts-grid{grid-template-columns:1fr 1fr} .contact-box{padding:2rem 1.5rem}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Samyak<span class="dot">.</span></div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#journey">Journey</a>
+    <a href="#goals">Goals</a>
+    <a href="#contact" class="nav-cta btn">Say Hi 👋</a>
+  </div>
+  <button class="hamburger" id="ham"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="#skills" onclick="closeMenu()">Skills</a>
+  <a href="#journey" onclick="closeMenu()">Journey</a>
+  <a href="#goals" onclick="closeMenu()">Goals</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+</div>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge"><span class="live-dot"></span> Currently: 2nd Semester · IIIT Pune</div>
+      <h1>Hi, I'm<br><span class="blue">Samyak Jain</span> 👋</h1>
+      <p class="hero-sub">A <strong>first-year B.Tech CSE student</strong> at IIIT Pune, from Surat, Gujarat. Exploring the tech world one concept at a time — with curiosity, grit, and a 9.16 SGPA to show for it.</p>
+      <div class="hero-buttons">
+        <a href="#about" class="btn btn-primary">Read My Story</a>
+        <a href="#skills" class="btn btn-secondary">My Skills</a>
+        <a href="#contact" class="btn btn-ghost">Say Hi 👋</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-n">9.16</span><span class="stat-l">SGPA · Sem 1</span></div>
+        <div class="stat"><span class="stat-n">25K</span><span class="stat-l">JEE Mains Rank</span></div>
+        <div class="stat"><span class="stat-n">2028</span><span class="stat-l">Graduating</span></div>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="profile-pic">SJ</div>
+      <div class="card-name">Samyak Jain</div>
+      <div class="card-role">B.Tech CSE · IIIT Pune · Batch of 2028</div>
+      <div class="card-divider"></div>
+      <div class="card-rows">
+        <div class="card-row"><div class="row-icon">🏙️</div> Surat, Gujarat</div>
+        <div class="card-row"><div class="row-icon">🎓</div> DPS Tapi (Schooling)</div>
+        <div class="card-row"><div class="row-icon">💻</div> C / C++ · DSA Basics</div>
+        <div class="card-row"><div class="row-icon">📅</div> Born 2007</div>
+      </div>
+      <div class="card-sgpa">⭐ 9.16 SGPA · Semester 1 Complete</div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-inner reveal">
+    <div class="section-top">
+      <div class="section-tag">About Me</div>
+      <h2>My Story So Far</h2>
+      <p class="section-desc">From Surat to IIIT Pune — an honest account of effort, setbacks, and finding my path.</p>
+    </div>
+    <div class="about-grid">
+      <div class="about-card span2">
+        <div class="emoji">👋</div>
+        <h3>Hello, World!</h3>
+        <p>Hey! I'm Samyak — a kid from <strong>Surat, Gujarat</strong> who grew up with big dreams. Born in 2007, I did my schooling at <strong>DPS Tapi</strong>, and after Class 10 dove into JEE prep. Two years of early mornings, late nights, relentless grind. Didn't crack IIT. Didn't get a top NIT CS seat. Secured <strong>25,000 in JEE Mains</strong> — and landed at <strong>IIIT Pune</strong>, where I quickly realised the destination matters less than what you do when you arrive.</p>
+      </div>
+      <div class="about-card">
+        <div class="emoji">💪</div>
+        <h3>The JEE Chapter</h3>
+        <p>Two years of prep taught me what no textbook could — <strong>discipline under pressure</strong>. The rank wasn't what I planned. The work ethic? That stayed forever.</p>
+      </div>
+      <div class="about-card">
+        <div class="emoji">🏫</div>
+        <h3>Life at IIIT Pune</h3>
+        <p>Sem 1 wasn't just grades. Made <strong>real friends</strong>, learned C/C++, touched DSA, figured out college life — and finished with a <strong>9.16 SGPA</strong>. Balance is a skill too.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="section-inner reveal">
+    <div class="section-top">
+      <div class="section-tag">Skills</div>
+      <h2>What I Know</h2>
+      <p class="section-desc">Skills picked up through college, JEE prep, and genuine curiosity.</p>
+    </div>
+    <div class="skills-tabs">
+      <button class="tab-btn active" onclick="switchTab(this,'tab-tech')">💻 Tech Skills</button>
+      <button class="tab-btn" onclick="switchTab(this,'tab-soft')">🧠 Soft Skills</button>
+      <button class="tab-btn" onclick="switchTab(this,'tab-learning')">📚 Learning Next</button>
+    </div>
+    <div class="tab-panel active" id="tab-tech">
+      <div class="skills-grid">
+        <div class="skill-chip">⚡ C Programming <span class="level good">Good</span></div>
+        <div class="skill-chip">🔷 C++ <span class="level good">Good</span></div>
+        <div class="skill-chip">🌲 Data Structures <span class="level basic">Basic</span></div>
+        <div class="skill-chip">🔍 Algorithms <span class="level basic">Basic</span></div>
+        <div class="skill-chip">🌐 HTML <span class="level learning">Learning</span></div>
+        <div class="skill-chip">🎨 CSS <span class="level learning">Learning</span></div>
+        <div class="skill-chip">⌨️ Problem Solving <span class="level good">Good</span></div>
+      </div>
+    </div>
+    <div class="tab-panel" id="tab-soft">
+      <div class="skills-grid">
+        <div class="skill-chip">🎯 Goal-oriented <span class="level good">Strong</span></div>
+        <div class="skill-chip">🤝 Building connections <span class="level good">Strong</span></div>
+        <div class="skill-chip">😤 Resilience <span class="level good">Strong</span></div>
+        <div class="skill-chip">⚡ Quick Learner <span class="level good">Strong</span></div>
+        <div class="skill-chip">📅 Time Management <span class="level basic">Growing</span></div>
+        <div class="skill-chip">🧩 Logical Thinking <span class="level good">Strong</span></div>
+      </div>
+    </div>
+    <div class="tab-panel" id="tab-learning">
+      <div class="skills-grid">
+        <div class="skill-chip">🌐 Web Development <span class="level learning">In Progress</span></div>
+        <div class="skill-chip">⚡ JavaScript <span class="level learning">Next Up</span></div>
+        <div class="skill-chip">🌳 Advanced DSA <span class="level learning">In Progress</span></div>
+        <div class="skill-chip">🐍 Python <span class="level learning">Planned</span></div>
+        <div class="skill-chip">⚛️ React <span class="level learning">Future</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="journey">
+  <div class="section-inner reveal">
+    <div class="section-top">
+      <div class="section-tag">My Journey</div>
+      <h2>Where I've Been</h2>
+      <p class="section-desc">Every step — including the tough ones — brought me here.</p>
+    </div>
+    <div class="timeline">
+      <div class="t-item">
+        <div class="t-dot"></div>
+        <div class="t-year">2007</div>
+        <h3>Born in Surat, Gujarat 🌅</h3>
+        <p>The beginning — raised in the diamond city of India, known for its hustle and warmth.</p>
+      </div>
+      <div class="t-item">
+        <div class="t-dot"></div>
+        <div class="t-year">Till Class 10</div>
+        <h3>DPS Tapi 📚</h3>
+        <p>Completed schooling at <strong>Delhi Public School, Tapi</strong>. Built a foundation of discipline and curiosity.</p>
+        <span class="t-tag">Schooling Complete ✓</span>
+      </div>
+      <div class="t-item">
+        <div class="t-dot"></div>
+        <div class="t-year">2 Years of Prep</div>
+        <h3>The JEE Grind 💪</h3>
+        <p>Two full years — Physics, Chemistry, Maths, every single day. Secured <strong>25,000 rank in JEE Mains</strong>. Didn't get IIT. Didn't quit either.</p>
+        <span class="t-tag">Rank: 25,000 · JEE Mains</span>
+      </div>
+      <div class="t-item">
+        <div class="t-dot"></div>
+        <div class="t-year">2024 — Present</div>
+        <h3>B.Tech CSE · IIIT Pune 🎓</h3>
+        <p>Learned <strong>C/C++</strong>, explored DSA basics, made real friends and unforgettable memories. Finished Semester 1 with a <strong>9.16 SGPA</strong>. Now exploring the tech world with full curiosity.</p>
+        <span class="t-tag">SGPA: 9.16 ⭐</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="fun">
+  <div class="section-inner reveal">
+    <div class="section-top">
+      <div class="section-tag">Quick Facts</div>
+      <h2>A Few Things About Me</h2>
+    </div>
+    <div class="facts-grid">
+      <div class="fact-card"><div class="big">🏙️</div><h4>Surat Born</h4><p>The textile &amp; diamond city — hustlers by nature</p></div>
+      <div class="fact-card"><div class="big">📖</div><h4>JEE Warrior</h4><p>2 years of prep. Didn't quit. Worth more than any rank.</p></div>
+      <div class="fact-card"><div class="big">⭐</div><h4>9.16 SGPA</h4><p>Sem 1 done — balanced studies, friendships and memories</p></div>
+      <div class="fact-card"><div class="big">🤝</div><h4>People Person</h4><p>Making real friends is a skill I genuinely invest in</p></div>
+      <div class="fact-card"><div class="big">💻</div><h4>CS Explorer</h4><p>C, C++, DSA — and now web dev. Just getting started.</p></div>
+      <div class="fact-card"><div class="big">🌱</div><h4>Always Growing</h4><p>Every semester: new skills, new people, new challenges</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="goals">
+  <div class="section-inner reveal">
+    <div class="section-top">
+      <div class="section-tag">Goals</div>
+      <h2>What I'm Working Towards</h2>
+      <p class="section-desc">Short-term targets and long-term dreams — tracked honestly.</p>
+    </div>
+    <div class="goals-list">
+      <div class="goal-item"><div class="goal-icon blue">💻</div><div class="goal-text"><h4>Master Web Development</h4><p>HTML → CSS → JavaScript → React. Building real projects along the way.</p></div><span class="goal-status status-active">🟢 Active</span></div>
+      <div class="goal-item"><div class="goal-icon green">🌲</div><div class="goal-text"><h4>Get Strong at DSA</h4><p>Data Structures &amp; Algorithms — essential for placements and problem solving.</p></div><span class="goal-status status-active">🟢 Active</span></div>
+      <div class="goal-item"><div class="goal-icon amber">⭐</div><div class="goal-text"><h4>Maintain Strong CGPA</h4><p>Keep the 9+ going through all 8 semesters.</p></div><span class="goal-status status-active">🟢 Active</span></div>
+      <div class="goal-item"><div class="goal-icon blue">🚀</div><div class="goal-text"><h4>Build a Real Project</h4><p>A working web app or tool — something I can show the world.</p></div><span class="goal-status status-soon">🟡 Soon</span></div>
+      <div class="goal-item"><div class="goal-icon green">🏢</div><div class="goal-text"><h4>Land a Great Internship</h4><p>Gain real industry experience before graduating in 2028.</p></div><span class="goal-status status-future">🔵 Future</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-inner reveal">
+    <div class="contact-box">
+      <h3>Let's Connect 🤝</h3>
+      <p>Always up for a good conversation — tech, college life, or anything in between.</p>
+      <div class="contact-links">
+        <a href="mailto:jain.samyak20.20@gmail.com" class="contact-btn white">✉️ Email Me</a>
+        <a href="https://www.linkedin.com/in/samyak-jain-23a530380/" target="_blank" class="contact-btn outline">💼 LinkedIn</a>
+        <a href="https://github.com/samjain10" target="_blank" class="contact-btn outline">🐙 GitHub</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>Made with curiosity by <span>Samyak Jain</span> · IIIT Pune · Class of 2028</footer>
+<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  document.getElementById('ham').addEventListener('click',()=>document.getElementById('mobileMenu').classList.toggle('open'));
+  function closeMenu(){document.getElementById('mobileMenu').classList.remove('open');}
+  function switchTab(btn,panelId){
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(panelId).classList.add('active');
+  }
+  const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+  const btt=document.getElementById('btt');
+  window.addEventListener('scroll',()=>btt.classList.toggle('show',window.scrollY>400));
+  const sections=document.querySelectorAll('section[id]');
+  window.addEventListener('scroll',()=>{
+    let current='';
+    sections.forEach(s=>{if(window.scrollY>=s.offsetTop-100)current=s.id;});
+    document.querySelectorAll('.nav-links a').forEach(a=>{a.style.color=a.getAttribute('href')==='#'+current?'var(--blue)':'';});
+  });
+</script>
+</body>
+</html>
